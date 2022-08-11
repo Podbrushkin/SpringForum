@@ -10,6 +10,7 @@ import javax.persistence.*;
 	// @SecondaryTable(name = "userid_username"),
 	// @SecondaryTable(name = "userid_roles")
 })
+@lombok.ToString
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

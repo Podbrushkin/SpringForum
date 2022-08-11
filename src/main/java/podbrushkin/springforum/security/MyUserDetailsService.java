@@ -6,9 +6,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 
 @Component
+@Transactional(readOnly=true)
 public class MyUserDetailsService implements UserDetailsService {
 	
 	@PersistenceContext
