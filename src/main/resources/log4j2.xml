@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+		<Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{[%-20.-40maxLen{%-5level %logger{1}.%method()}{}]}{trace=bright cyan} %msg%n"
+				disableAnsi="false" charset="866"/>
+        </Console>
+		<Console name="LogToConsoleBrief" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{[%-20.-40maxLen{%-5level %logger{-1}}{}]}{trace=bright cyan} %msg%n"
+				disableAnsi="false" charset="866"/>
+        </Console>
+    </Appenders>
+	
+	
+    <Loggers>
+        <Logger name="org.springframework" level="info" additivity="false">
+            <AppenderRef ref="LogToConsoleBrief"/>
+        </Logger>
+		<Logger name="org.springframework.security" level="info" additivity="false">
+            <AppenderRef ref="LogToConsoleBrief"/>
+        </Logger>
+		<Logger name="org.hibernate" level="info" additivity="false">
+            <AppenderRef ref="LogToConsoleBrief"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="LogToConsoleBrief"/>
+        </Root>
+    </Loggers>
+</Configuration>
