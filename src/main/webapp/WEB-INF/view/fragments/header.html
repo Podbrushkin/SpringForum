@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<!-- th:text="${#authentication.name}" -->
+  </head>
+  <body>
+    <div th:fragment="header" >
+		
+		<div name="headerDiv">
+			<span name="headerGreeting"
+				th:if="${#authorization.expression('isAuthenticated()')}">
+				<span th:utext="|Hello, <b>${#authentication.name}</b>!|" />
+				<a name="headerLink" href="/logout">Logout</a>
+			</span>
+			
+			<span name="headerGreeting"
+				th:if="${#authorization.expression('!isAuthenticated()')}">
+				
+				<a name="headerLink" href="/login">Login</a>
+			</span>
+			
+			
+			
+		</div> 
+		
+    </div>
+  </body>
+</html>

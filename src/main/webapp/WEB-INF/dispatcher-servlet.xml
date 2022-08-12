@@ -19,7 +19,7 @@
 	<context:component-scan base-package="podbrushkin.springforum" />
 	<mvc:annotation-driven/>
 	
-	<!-- <mvc:resources mapping="/resources/**" location="/resources/" /> -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
 	
 	
@@ -75,7 +75,7 @@
 		  <property name="prefix" value="/WEB-INF/view/" />
 		  <property name="suffix" value=".html" />
 		  <property name="templateMode" value="HTML" />
-		  <property name="cacheable" value="true" />
+		  <property name="cacheable" value="false" />
 	</bean>
 	
 	<!-- <bean id="templateResolver"
@@ -90,6 +90,12 @@
 	<bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
 		  <property name="templateResolver" ref="templateResolver" />
 		  <property name="enableSpringELCompiler" value="true" />
+		  <property name="additionalDialects">
+			<set>
+			  <!-- Note the package would change to 'springsecurity[5]' if you are using that version -->
+			  <bean class="org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect"/>
+			</set>
+		  </property>
 	</bean>
 	
 	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">

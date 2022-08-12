@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link href="../../../resources/css/styles.css" rel="stylesheet" 
+			media="screen" th:href="@{/resources/css/styles.css}"/>
+		<title th:text="${title}">Welcome</title>
+	</head>
+	<body>
+		<header th:replace="fragments/header :: header" />
+		<span name="basicPageText"
+			th:text="${text}">
+			<h1>Spring MVC + Thymeleaf  WITHOUT Spring Boot!</h1>
+		</span>
+	</body>
+</html>

@@ -1,0 +1,42 @@
+body {
+    margin:0;
+	background-color: lightgrey;
+}
+
+a:link[name=headerLink], a:visited[name=headerLink] {
+		    background-color: #f44336;
+			color: white;
+			padding: 8px 25px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			border-radius: 12px;
+}
+
+a:hover[name=headerLink], a:active[name=headerLink] {
+  background-color: red;
+}
+
+div[name=headerDiv] {
+	background-color: darkgrey;
+	width: 100%;
+	text-align: right;
+	padding: 5px;
+	/* margin: 5px; */
+	box-sizing: border-box;
+	border: 2px solid dimgrey;
+}
+
+span[name=headerGreeting] {
+	/* color: green; */
+	font-size:18px;
+}
+
+span[name=basicPageText] {
+	/* color: green; */
+	font-size:120%;
+	/* padding: 5%; */
+	margin: 5%;
+	margin-top:20px; 
+	display:inline-block;
+}
