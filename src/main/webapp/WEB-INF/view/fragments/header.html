@@ -6,19 +6,25 @@
   <body>
     <div th:fragment="header" >
 		
-		<div name="headerDiv">
-			<span name="headerGreeting"
-				th:if="${#authorization.expression('isAuthenticated()')}">
-				<span th:utext="|Hello, <b>${#authentication.name}</b>!|" />
-				<a name="headerLink" href="/logout">Logout</a>
-			</span>
+		<div class="headerDiv">
 			
-			<span name="headerGreeting"
-				th:if="${#authorization.expression('!isAuthenticated()')}">
+			<a class="headerLogo" href="/">Spring Forum</a>
+			<a name="headerLeftLink" href="/createUser">Create User</a>
+			
+			
+			<div style="float: right">
+				<span name="headerGreeting"
+					th:if="${#authorization.expression('isAuthenticated()')}">
+					<span th:utext="|Hello, <b>${#authentication.name}</b>!|" />
+					<a name="headerLink" href="/logout">Logout</a>
+				</span>
 				
-				<a name="headerLink" href="/login">Login</a>
-			</span>
-			
+				<span
+					th:if="${#authorization.expression('!isAuthenticated()')}">
+					
+					<a name="headerLink" href="/login">Login</a>
+				</span>
+			</div>
 			
 			
 		</div> 

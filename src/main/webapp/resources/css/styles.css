@@ -4,27 +4,60 @@ body {
 }
 
 a:link[name=headerLink], a:visited[name=headerLink] {
-		    background-color: #f44336;
-			color: white;
-			padding: 8px 25px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			border-radius: 12px;
+	background-color: #f44336;
+	color: white;
+	padding: 8px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	border-radius: 12px;
 }
 
 a:hover[name=headerLink], a:active[name=headerLink] {
   background-color: red;
 }
 
-div[name=headerDiv] {
+a:link[name=headerLeftLink], a:visited[name=headerLeftLink] {
+	background-color: #4040ff;
+	color: white;
+	padding: 6px 22px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	border-radius: 12px;
+}
+
+a:hover[name=headerLeftLink], a:active[name=headerLeftLink] {
+  background-color: blue;
+}
+
+.headerDiv {
 	background-color: darkgrey;
 	width: 100%;
-	text-align: right;
+	/* text-align: right; */
 	padding: 5px;
 	/* margin: 5px; */
 	box-sizing: border-box;
 	border: 2px solid dimgrey;
+	
+
+}
+
+.headerDiv a.headerLogo {
+	font-size: 200%;
+	font-weight: bold;
+	text-decoration: none;
+	color: AliceBlue;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-left:20px;
+	margin-right:20px;
+}
+
+.headerDiv a.headerLeftLink {
+	text-decoration: none;
+	color: dimgrey;
+	
+	font-size: 150%;
 }
 
 span[name=headerGreeting] {
