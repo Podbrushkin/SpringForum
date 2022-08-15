@@ -9,7 +9,9 @@
 		<div class="headerDiv">
 			
 			<a class="headerLogo" href="/">Spring Forum</a>
-			<a name="headerLeftLink" href="/createUser">Create User</a>
+			<a name="headerLeftLink" 
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+				href="/createUser">Create User</a>
 			
 			
 			<div style="float: right">
