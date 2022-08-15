@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import lombok.extern.slf4j.Slf4j;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -35,7 +36,7 @@ public class InitService {
 		if (users.size() == 0) {
 			log.info("no users found, creating admin-qwerty");
 			// sf.openSession().persist(new User("admin", encoder.encode("qwerty"), "ROLE_ADMIN, ROLE_USER"));
-			em.persist(new User("admin", encoder.encode("qwerty"), "ROLE_ADMIN, ROLE_USER"));
+			em.persist(new User("admin", encoder.encode("qwerty"), Set.of("ROLE_ADMIN","ROLE_USER")));
 		}
 		log.info("List of existing users:"+ users);
 	}

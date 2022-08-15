@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link href="../../../resources/css/styles.css" rel="stylesheet" 
+			media="screen" th:href="@{/resources/css/styles.css}"/>
+		<title>Create user</title>
+	</head>
+	<body>
+		<header th:replace="fragments/header :: header" />
+		
+		<form action="#" th:action="@{/createUser}" th:object="${user}" method="post">
+			<p>Username: <input type="text" th:field="*{username}" /></p>
+			<p>Password: <input type="password" th:field="*{password}" /></p>
+			<ul>
+			  <li th:each="role : ${possibleRoles}">
+				<input type="checkbox" th:field="*{roles}" th:value="${role}" />
+				<label th:for="${#ids.prev('roles')}" 
+					   th:text="${role}">*possible_role*</label>
+			  </li>
+			</ul>
+			<p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+		</form>
+		
+	</body>
+</html>

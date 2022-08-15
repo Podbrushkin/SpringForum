@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			http.authorizeRequests()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/info").permitAll()
-				.antMatchers("/info").hasAuthority("ROLE_ADMIN")
+				.antMatchers("/createUser").hasAuthority("ROLE_ADMIN")
 				.antMatchers("/").permitAll()
 				.and().formLogin()
 				.and().logout().logoutSuccessUrl("/");

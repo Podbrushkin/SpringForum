@@ -3,6 +3,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
@@ -14,8 +15,9 @@
 		http://www.springframework.org/schema/tx
     	http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/security
-		http://www.springframework.org/schema/security/spring-security.xsd">
-	
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/data/jpa
+		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 	<context:component-scan base-package="podbrushkin.springforum" />
 	<mvc:annotation-driven/>
 	
@@ -64,6 +66,11 @@
 		
 	</bean>
 	<tx:annotation-driven transaction-manager="txManager" />
+	
+	<jpa:repositories base-package="podbrushkin.springforum.repository" 
+		entity-manager-factory-ref="sessionFactory" 
+		transaction-manager-ref="txManager"/>
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 	
 	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="WEB-INF/view/" />

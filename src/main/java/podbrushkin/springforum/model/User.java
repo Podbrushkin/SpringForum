@@ -1,12 +1,13 @@
 package podbrushkin.springforum.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
 @SecondaryTables( value = {
 	@SecondaryTable(name = "userid_username", pkJoinColumns=@PrimaryKeyJoinColumn(name="userid", referencedColumnName="id")),
-	@SecondaryTable(name = "userid_roles", pkJoinColumns=@PrimaryKeyJoinColumn(name="userid", referencedColumnName="id"))
+	// @SecondaryTable(name = "userid_role", pkJoinColumns=@PrimaryKeyJoinColumn(name="userid", referencedColumnName="id"))
 	// @SecondaryTable(name = "userid_username"),
 	// @SecondaryTable(name = "userid_roles")
 })
@@ -18,12 +19,17 @@ public class User {
 	@Column(table="userid_username")
 	private String username;
 	private String password;
-	@Column(table="userid_roles")
-	private String roles;
+	// @Column(table="userid_role")
+	@ElementCollection
+	@CollectionTable(
+		name="userid_role",
+		joinColumns=@JoinColumn(name="userid",referencedColumnName="id")
+	)
+	private Set<String> roles;
 	
 	public User() {}
 	
-	public User(String username, String password, String roles) {
+	public User(String username, String password, Set<String> roles) {
 		
 		this.username = username;
 		this.password = password;
@@ -52,10 +58,10 @@ public class User {
 		this.password = password;
 	}
 	
-	public String getRoles() {
+	public Set<String> getRoles() {
 		return roles;
 	}
-	public void setRoles(String roles) {
+	public void setRoles(Set<String> roles) {
 		this.roles = roles;
 	}
 	
