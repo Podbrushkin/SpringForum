@@ -11,6 +11,7 @@ import javax.persistence.*;
 
 @Component
 @Transactional(readOnly=true)
+@lombok.extern.slf4j.Slf4j
 public class MyUserDetailsService implements UserDetailsService {
 	
 	@PersistenceContext
@@ -22,11 +23,23 @@ public class MyUserDetailsService implements UserDetailsService {
 		var jpql = "from User u where u.username=:uname";
 		var query = em.createQuery(jpql, User.class);
 		query.setParameter("uname", s);
-		var user = query.getSingleResult();
-		if (user == null) throw new UsernameNotFoundException("No user with username="+s);
+		var foundUsers = query.getResultList();
 		
-		return new MyUserDetails(user);
 		
+		String msg = "";
+		if (foundUsers.size() == 0) {
+			msg = "Found no user with username=";
+			log.warn(msg+s);
+			throw new UsernameNotFoundException(msg+s);
+		} else if (foundUsers.size() == 0) {
+			msg = "Found multiple users with username=";
+			log.warn(msg+s);
+			throw new UsernameNotFoundException(msg+s);
+		}
+		else {
+			log.info("Found User:" + foundUsers.get(0));
+			return new MyUserDetails(foundUsers.get(0));
+		}
 		
 	}
 	

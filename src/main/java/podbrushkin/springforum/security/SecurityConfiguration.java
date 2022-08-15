@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -40,11 +41,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests()
-				.antMatchers("/login").permitAll()
+				// .antMatchers("/login").permitAll()
 				.antMatchers("/info").permitAll()
 				.antMatchers("/createUser").hasAuthority("ROLE_ADMIN")
 				.antMatchers("/").permitAll()
-				.and().formLogin()
-				.and().logout().logoutSuccessUrl("/");
+				.and().formLogin(form -> form
+					.loginPage("/login")
+					.permitAll())
+				.logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/");
 	}
 }

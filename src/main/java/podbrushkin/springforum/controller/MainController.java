@@ -62,4 +62,8 @@ public class MainController {
 		return "createUser";
 	}
 	
+	@GetMapping("/login")
+	String login() {
+		return "login";
+	}
 }
