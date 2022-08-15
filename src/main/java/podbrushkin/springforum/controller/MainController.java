@@ -13,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import javax.validation.Valid;
+
 import java.util.StringJoiner;
 
 @Controller
@@ -20,6 +23,11 @@ public class MainController {
 	
 	@Autowired
 	UserService userService;
+	
+	@ModelAttribute
+	public void passPossibleRoles(Model model) {
+		model.addAttribute("possibleRoles", userService.getPossibleRoles());
+	}
 	
 	@GetMapping("/")
 	public ModelAndView root() {
@@ -51,13 +59,14 @@ public class MainController {
 	@GetMapping("/createUser")
 	public String createUser(Model model) {
 		model.addAttribute("user", new User());
-		model.addAttribute("possibleRoles", userService.getPossibleRoles());
+		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		return "createUser";
 	}
 	
 	@PostMapping("/createUser")
-	public String createUser(@ModelAttribute User user) {
-		
+	public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult) {
+		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
+		if (bindingResult.hasErrors()) return "createUser";
 		userService.createUser(user);
 		return "createUser";
 	}

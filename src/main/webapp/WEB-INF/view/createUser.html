@@ -9,9 +9,17 @@
 	<body>
 		<header th:replace="fragments/header :: header" />
 		
-		<form action="#" th:action="@{/createUser}" th:object="${user}" method="post">
-			<p>Username: <input type="text" th:field="*{username}" /></p>
-			<p>Password: <input type="password" th:field="*{password}" /></p>
+		<form class="loginForm" action="#" th:action="@{/createUser}" th:object="${user}" method="post">
+		
+			<input type="text" th:field="*{username}" placeholder="Username" />
+			<!-- <label>Username: </label> -->
+			<span class="errorMsg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
+			<br/>
+			
+			<input type="password" th:field="*{password}" placeholder="Password"/>
+			<!-- <span>Password: </span> -->
+			<span class="errorMsg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span>
+			<br/>
 			<ul>
 			  <li th:each="role : ${possibleRoles}">
 				<input type="checkbox" th:field="*{roles}" th:value="${role}" />
@@ -19,7 +27,9 @@
 					   th:text="${role}">*possible_role*</label>
 			  </li>
 			</ul>
-			<p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+			<p>
+				<button type="submit" style="background-color: #4040ff;">Create new account</button>
+			</p>
 		</form>
 		
 	</body>

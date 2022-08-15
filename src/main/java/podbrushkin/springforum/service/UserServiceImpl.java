@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly=true)
+@lombok.extern.slf4j.Slf4j
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
@@ -39,6 +40,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	public void createUser(User user) {
+		if (user.getUsername().length() < 3) {
+			log.warn("Prevented attempt to create user with small username");
+			return;
+		}
 		user.setId(null);
 		user.setPassword(encoder.encode(user.getPassword()));
 		userRepository.save(user);

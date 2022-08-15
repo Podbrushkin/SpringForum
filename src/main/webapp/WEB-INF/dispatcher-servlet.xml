@@ -108,8 +108,19 @@
 	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
 		  <property name="templateEngine" ref="templateEngine" />
 		  <property name="order" value="1" />
+		  <property name="characterEncoding" value="UTF-8"/>
 		  <!-- String vals being returned from controller should match this: -->
 		  <!-- <property name="viewNames" value="*.html,*.xhtml" /> -->
+	</bean>
+	
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+	</mvc:interceptors>
+	<bean id="localeResolver" 
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en" />
 	</bean>
 	
 </beans>
