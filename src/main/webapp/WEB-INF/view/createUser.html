@@ -34,6 +34,8 @@
 			  
 			</ul>
 			<span class="errorMsg" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Roles Error</span>
+			<span class="successMsg" th:if="${successMsg != null}" th:text="${successMsg}" />
+			
 			<p>
 				<button type="submit" style="background-color: #4040ff;">Create new account</button>
 			</p>

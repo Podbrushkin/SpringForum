@@ -83,8 +83,9 @@ public class MainController {
 		BindingResult bindingResult) {
 			
 		if (bindingResult.hasErrors()) return "createUser";
-		userService.createUser(user);
-		// model.addAttribute("user", new UserDto());
+		var freshUser = new UserDto(userService.createUser(user));
+		freshUser.setPassword(null);
+		model.addAttribute("successMsg", freshUser.toString());
 		return "createUser";
 	}
 	

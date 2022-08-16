@@ -9,7 +9,7 @@ public interface UserService {
 	List<User> getAll();
 	Optional<User> findByUsername(String username);
 	Optional<User> getById(long id);
-	void createUser(User user);
-	void createUser(UserDto user);
+	User createUser(User user);
+	User createUser(UserDto user);
 	List<String> getPossibleRoles();
 }

@@ -39,21 +39,23 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Transactional
-	public void createUser(User user) {
+	public User createUser(User user) {
 		if (user.getUsername().length() < 3) {
 			log.warn("Prevented attempt to create user with small username");
-			return;
+			return null;
 		}
 		user.setId(null);
 		user.setPassword(encoder.encode(user.getPassword()));
-		userRepository.save(user);
+		var u = userRepository.save(user);
+		log.info("Persisted new user to database: " + u);
+		return u;
 	}
 	
 	@Transactional
-	public void createUser(UserDto userDto) {
+	public User createUser(UserDto userDto) {
 		var u = UserDto.toUser(userDto);
 		
-		createUser(u);
+		return createUser(u);
 	}
 	
 	public List<String> getPossibleRoles() {
