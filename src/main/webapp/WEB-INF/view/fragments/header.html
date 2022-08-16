@@ -6,27 +6,58 @@
   <body>
     <div th:fragment="header" >
 		
-		<div class="headerDiv">
+		<ul class="navbar">
+			<li><a id="logo" href="/">Spring Forum</a></li>
+			<span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+				<li><a href="/createUser">Create user</a></li>
+				<li><a href="/listUsers">List users</a></li>
+			</span>
 			
-			<a class="headerLogo" href="/">Spring Forum</a>
-			<a name="headerLeftLink" 
-				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
-				href="/createUser">Create User</a>
+			<!-- <li style="float:right"><a class="active" href="/login">Login</a></li> -->
+			<span th:if="${#authorization.expression('isAuthenticated()')}">
+				<li style="float:right">
+					<a href="/logout">Logout</a>
+				</li>
+				<li style="float:right">
+					<a id="greeting" th:utext="|Hello, <b>${#authentication.name}</b>!|" />
+				</li>
+			</span>
+			<span th:if="${#authorization.expression('!isAuthenticated()')}">
+				<li style="float:right"><a href="/login" class="active">Login</a></li>
+			</span>
 			
-			
-			<div style="float: right">
+		</ul>
+		
+		
+		<div class="headerDiv" style="display: none;">
+			<a id="headerLogo" href="/">Spring Forum</a>
+			<!-- <span style="float: right"> -->
 				<span name="headerGreeting"
 					th:if="${#authorization.expression('isAuthenticated()')}">
 					<span th:utext="|Hello, <b>${#authentication.name}</b>!|" />
-					<a name="headerLink" href="/logout">Logout</a>
+					<a name="headerRightLink" href="/logout">Logout</a>
 				</span>
 				
 				<span
 					th:if="${#authorization.expression('!isAuthenticated()')}">
 					
-					<a name="headerLink" href="/login">Login</a>
+					<a name="headerRightLink" href="/login">Login</a>
 				</span>
-			</div>
+			<!-- </span> -->
+			
+			<!-- <span> -->
+				
+				
+				<a name="headerLeftLink" 
+					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+					href="/createUser">Create User</a>
+					
+				<a name="headerLeftLink" 
+					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+					href="/listUsers">List users</a>
+			<!-- </span> -->
+			
+			
 			
 			
 		</div> 

@@ -1,6 +1,70 @@
 body {
     margin:0;
-	background-color: lightgrey;
+	padding:0;
+	background-color: LightGrey;
+	/* background-color: LightBlue; */
+}
+
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+.navbar li {
+	float: left;
+}
+
+.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.navbar li a:hover:not(.active, #greeting) {
+  background-color: #111;
+}
+.navbar .active {
+  background-color: #04AA6D;
+}
+.navbar #logo {
+	/* font-size: 150%; */
+	display: inline-block;
+	font-weight: bold;
+	color: LightBlue;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* .headerDiv {
+	background-color: Grey;
+	width: 100%;
+	box-sizing: border-box;
+	display: inline-block;
+	border: 2px solid dimgrey;
+}
+.headerDiv #headerLogo {
+	font-size: 200%;
+	font-weight: bold;
+	text-decoration: none;
+	color: AliceBlue;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-left:20px;
+	margin-right:20px;
+	display: inline-block;
+	float: left;
+} */
+
+h1 {
+  background: #acacac;
+  box-sizing: border-box;
+  padding: 0.5%;
+  text-align: center;
+  color: #333;
+  font-size: 30px;
+  margin: 0 0 2% 0;
 }
 
 .loginForm {
@@ -15,7 +79,6 @@ body {
   background-color: #04AA6D;
   color: white;
   padding: 14px 20px;
-  
   margin: 8px 0;
   border: none;
   cursor: pointer;
@@ -54,67 +117,38 @@ body {
 }
 
 
-a:link[name=headerLink], a:visited[name=headerLink] {
+/* a:link[name=headerRightLink], a:visited[name=headerRightLink] {
 	background-color: #f44336;
 	color: white;
-	padding: 8px 25px;
+	padding: 0.5% 1%;
+	float: right;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 12px;
 }
 
-a:hover[name=headerLink], a:active[name=headerLink] {
+a:hover[name=headerRightLink], a:active[name=headerRightLink] {
   background-color: red;
 }
 
 a:link[name=headerLeftLink], a:visited[name=headerLeftLink] {
 	background-color: #4040ff;
+	float: left;
 	color: white;
-	padding: 6px 22px;
+	padding: 0.5% 1%;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	border-radius: 12px;
 }
-
 a:hover[name=headerLeftLink], a:active[name=headerLeftLink] {
   background-color: blue;
 }
-
-.headerDiv {
-	background-color: darkgrey;
-	width: 100%;
-	/* text-align: right; */
-	padding: 5px;
-	/* margin: 5px; */
-	box-sizing: border-box;
-	border: 2px solid dimgrey;
-	
-
-}
-
-.headerDiv a.headerLogo {
-	font-size: 200%;
-	font-weight: bold;
-	text-decoration: none;
-	color: AliceBlue;
-	font-family: Arial, Helvetica, sans-serif;
-	margin-left:20px;
-	margin-right:20px;
-}
-
-.headerDiv a.headerLeftLink {
-	text-decoration: none;
-	color: dimgrey;
-	
-	font-size: 150%;
-}
-
 span[name=headerGreeting] {
-	/* color: green; */
+	float: right;
 	font-size:18px;
-}
+} */
 
 span[name=basicPageText] {
 	/* color: green; */
@@ -123,4 +157,32 @@ span[name=basicPageText] {
 	margin: 5%;
 	margin-top:20px; 
 	display:inline-block;
+}
+
+#listUsers {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  /* width: 70%; */
+}
+
+#listUsers td, #listUsers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  width: auto;
+}
+
+#listUsers tr:nth-child(even){background-color: #f2f2f2;}
+
+#listUsers tr:hover {background-color: #ddd;}
+
+#listUsers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  /* background-color: DimGray; */
+  color: white;
 }

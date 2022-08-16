@@ -8,8 +8,9 @@
 	</head>
 	<body>
 		<header th:replace="fragments/header :: header" />
+		<h1>Create new user</h1>
 		
-		<span th:text="${user != null} ? ${user} : 'null value!'" />
+		<!-- <span th:text="${user != null} ? ${user} : 'null value!'" /> -->
 
 		
 		<form class="loginForm" action="#" th:action="@{/createUser}" th:object="${user}" method="post"

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link href="../../../resources/css/styles.css" rel="stylesheet" 
+			media="screen" th:href="@{/resources/css/styles.css}"/>
+		<title>List of users</title>
+	</head>
+	<body>
+		<header th:replace="fragments/header :: header" />
+		<h1>List of Users</h1>
+		
+		<div th:unless="${#lists.isEmpty(users)}">
+			<table id="listUsers">
+				<thead>
+				  <tr>
+					<th>Id</th>
+					<th>Username</th>
+					<th>Roles</th>
+				  </tr>
+				</thead>
+				
+				<tbody>
+				  <tr th:each="u : ${users}">
+					<td th:text="${{u.id}}">789</td>
+					<td th:text="${{u.username}}">vasya</td>
+					<td th:text="${{u.roles}}">ROLE_USER, ROLE_ADMIN</td>
+				  </tr>
+				</tbody>
+			</table>
+		</div>
+		
+	</body>
+</html>

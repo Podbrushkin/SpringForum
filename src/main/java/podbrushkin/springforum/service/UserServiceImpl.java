@@ -30,6 +30,23 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
 	}
 	
+	public List<User> getAllEager() {
+		var users = userRepository.findAll();
+		for (var u : users) {
+			u.getRoles().size();
+		}
+		
+		return users;
+		
+	}
+	
+	/* public List<User> fetch(List<User> users) {
+		for (var u : users) {
+			u.getRoles().size();
+		}
+		return users;
+	} */
+	
 	public Optional<User> findByUsername(String username) {
 		return Optional.ofNullable(userRepository.findByUsername(username));
 	}

@@ -15,8 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import javax.validation.Valid;
-
+import org.thymeleaf.context.LazyContextVariable;
 import java.util.StringJoiner;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -87,6 +88,22 @@ public class MainController {
 		freshUser.setPassword(null);
 		model.addAttribute("successMsg", freshUser.toString());
 		return "createUser";
+	}
+	
+	@GetMapping("/listUsers")
+	public String listUsers(Model model) {
+		
+		var users = userService.getAllEager().stream()
+			.map(u -> {
+				var dto = new UserDto(u);
+				dto.setPassword(null);
+				return dto;
+			}).toList();
+		
+		model.addAttribute("users", users);
+		
+		
+		return "listUsers";
 	}
 	
 	@GetMapping("/login")
