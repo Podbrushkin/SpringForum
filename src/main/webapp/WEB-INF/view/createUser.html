@@ -9,8 +9,13 @@
 	<body>
 		<header th:replace="fragments/header :: header" />
 		
-		<form class="loginForm" action="#" th:action="@{/createUser}" th:object="${user}" method="post">
+		<span th:text="${user != null} ? ${user} : 'null value!'" />
+
 		
+		<form class="loginForm" action="#" th:action="@{/createUser}" th:object="${user}" method="post"
+			>
+			
+			
 			<input type="text" th:field="*{username}" placeholder="Username" />
 			<!-- <label>Username: </label> -->
 			<span class="errorMsg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
@@ -26,7 +31,9 @@
 				<label th:for="${#ids.prev('roles')}" 
 					   th:text="${role}">*possible_role*</label>
 			  </li>
+			  
 			</ul>
+			<span class="errorMsg" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">Roles Error</span>
 			<p>
 				<button type="submit" style="background-color: #4040ff;">Create new account</button>
 			</p>

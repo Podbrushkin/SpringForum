@@ -2,8 +2,8 @@ package podbrushkin.springforum.model;
 
 import javax.persistence.*;
 import java.util.Set;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.Pattern;
+// import javax.validation.constraints.Size;
+// import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name="users")
@@ -19,11 +19,11 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	@Column(table="userid_username")
-	@Size(min=3, max=50)
-	@Pattern(regexp="^[a-zA-Zа-яА-Я0-9\\s_.-]+$")
+	// @Size(min=3, max=50)
+	// @Pattern(regexp="^[a-zA-Zа-яА-Я0-9\\s_.-]+$")
 	private String username;
-	@Size(min=6, max=50)
-	@Pattern(regexp="^[\\p{Punct}a-zA-Zа-яА-Я0-9\\s]+$")
+	// @Size(min=6, max=50)
+	// @Pattern(regexp="^[\\p{Punct}a-zA-Zа-яА-Я0-9\\s]+$")
 	private String password;
 	// @Column(table="userid_role")
 	@ElementCollection

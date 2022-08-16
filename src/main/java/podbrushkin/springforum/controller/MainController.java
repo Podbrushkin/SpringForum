@@ -1,7 +1,7 @@
 package podbrushkin.springforum.controller;
 
 import podbrushkin.springforum.service.*;
-import podbrushkin.springforum.model.*;
+import podbrushkin.springforum.model.UserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,16 +58,33 @@ public class MainController {
 	
 	@GetMapping("/createUser")
 	public String createUser(Model model) {
-		model.addAttribute("user", new User());
+		model.addAttribute("user", new UserDto());
 		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		return "createUser";
 	}
 	
-	@PostMapping("/createUser")
-	public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult) {
+	/* @PostMapping("/createUser")
+	public String createUser(@ModelAttribute @Valid UserDto user, BindingResult bindingResult) {
 		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		if (bindingResult.hasErrors()) return "createUser";
 		userService.createUser(user);
+		return "createUser";
+	} */
+	
+	/* @PostMapping("/createUser")
+	public String createUser(@ModelAttribute UserDto user) {
+		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
+		userService.createUser(user);
+		return "createUser";
+	} */
+	
+	@PostMapping("/createUser")
+	public String createUser(Model model, @ModelAttribute("user") @Valid UserDto user, 
+		BindingResult bindingResult) {
+			
+		if (bindingResult.hasErrors()) return "createUser";
+		userService.createUser(user);
+		// model.addAttribute("user", new UserDto());
 		return "createUser";
 	}
 	

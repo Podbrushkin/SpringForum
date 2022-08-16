@@ -49,6 +49,13 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 	
+	@Transactional
+	public void createUser(UserDto userDto) {
+		var u = UserDto.toUser(userDto);
+		
+		createUser(u);
+	}
+	
 	public List<String> getPossibleRoles() {
 		String q = "select distinct(r) from User u join u.roles r";
 		var possibleRoles = em.createQuery(q, String.class).getResultList();

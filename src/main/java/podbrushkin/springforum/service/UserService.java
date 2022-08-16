@@ -10,5 +10,6 @@ public interface UserService {
 	Optional<User> findByUsername(String username);
 	Optional<User> getById(long id);
 	void createUser(User user);
+	void createUser(UserDto user);
 	List<String> getPossibleRoles();
 }
