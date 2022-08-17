@@ -12,7 +12,7 @@
 				<li><a href="/createUser">Create user</a></li>
 				<li><a href="/listUsers">List users</a></li>
 			</span>
-			
+			<li><a href="/messages">Messages</a></li>
 			<!-- <li style="float:right"><a class="active" href="/login">Login</a></li> -->
 			<span th:if="${#authorization.expression('isAuthenticated()')}">
 				<li style="float:right">
@@ -27,37 +27,6 @@
 			</span>
 			
 		</ul>
-		
-		<!-- can delete this headerDiv -->
-		<div class="headerDiv" style="display: none;">
-			<a id="headerLogo" href="/">Spring Forum</a>
-			<!-- <span style="float: right"> -->
-				<span name="headerGreeting"
-					th:if="${#authorization.expression('isAuthenticated()')}">
-					<span th:utext="|Hello, <b>${#authentication.name}</b>!|" />
-					<a name="headerRightLink" href="/logout">Logout</a>
-				</span>
-				
-				<span
-					th:if="${#authorization.expression('!isAuthenticated()')}">
-					
-					<a name="headerRightLink" href="/login">Login</a>
-				</span>
-			<!-- </span> -->
-			
-			<!-- <span> -->
-				
-				
-				<a name="headerLeftLink" 
-					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
-					href="/createUser">Create User</a>
-					
-				<a name="headerLeftLink" 
-					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
-					href="/listUsers">List users</a>
-			<!-- </span> -->
-			
-		</div> 
 		
     </div>
 	

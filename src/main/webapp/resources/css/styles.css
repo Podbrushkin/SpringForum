@@ -5,6 +5,16 @@ body {
 	/* background-color: LightBlue; */
 }
 
+h1 {
+  background: #acacac;
+  box-sizing: border-box;
+  padding: 0.5%;
+  text-align: center;
+  color: #333;
+  font-size: 30px;
+  margin: 0 0 2% 0;
+}
+
 .navbar {
   list-style-type: none;
   margin: 0;
@@ -35,36 +45,6 @@ body {
 	font-weight: bold;
 	color: LightBlue;
 	font-family: Arial, Helvetica, sans-serif;
-}
-
-
-/* .headerDiv {
-	background-color: Grey;
-	width: 100%;
-	box-sizing: border-box;
-	display: inline-block;
-	border: 2px solid dimgrey;
-}
-.headerDiv #headerLogo {
-	font-size: 200%;
-	font-weight: bold;
-	text-decoration: none;
-	color: AliceBlue;
-	font-family: Arial, Helvetica, sans-serif;
-	margin-left:20px;
-	margin-right:20px;
-	display: inline-block;
-	float: left;
-} */
-
-h1 {
-  background: #acacac;
-  box-sizing: border-box;
-  padding: 0.5%;
-  text-align: center;
-  color: #333;
-  font-size: 30px;
-  margin: 0 0 2% 0;
 }
 
 .loginForm {
@@ -99,6 +79,74 @@ h1 {
 	box-sizing: border-box;
 }
 
+.createMessageForm {
+	/* background-color: LightGray; */
+	/* color: white; */
+	margin-left: auto;
+	margin-right: auto;
+	/* padding: 14px 20px; */
+	/* margin: 8px 0; */
+	/* border: none; */
+	/* cursor: pointer; */
+	/* width: 80%; */
+}
+.createMessageForm textarea {
+	width: 100%;
+	padding: 12px 20px;
+	/* margin-left: auto; */
+	/* margin-right: auto; */
+	margin: auto;
+	/* display: inline-block; */
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	resize: vertical;
+	
+}
+
+.createMessageForm button {
+	background-color: #04AA6D;
+	/* background-color: Blue; */
+	color: White;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	margin: 1% auto;
+	/* background-color: #04AA6D;
+	
+	color: white;
+	margin-left: auto;
+	margin-right: auto;
+	
+	padding: 14px 20px;
+	
+	border: none;
+	cursor: pointer;
+	width: 60%; */
+	/* box-sizing: border-box; */
+	/* text-align: center; */
+	/* display:block; */
+}
+
+.messagesList {
+	list-style-type: none;
+	padding: 0;
+}
+
+.messagesList li {
+	border: 2px solid #dedede;
+	background-color: #f1f1f1;
+	border-radius: 5px;
+	padding: 10px;
+	/* width: 50%; */
+	/* margin-left: auto; */
+	/* margin-right: auto; */
+	margin: auto;
+	/* margin: 0.1% auto; */
+	/* margin: 10px 0; */
+}
+
 .errorMsg {
   color:red;
   background-color: LavenderBlush;
@@ -106,6 +154,8 @@ h1 {
   border-radius: 4px;
   /* box-shadow: 0px 0px 20px 0px rgba(255,0,0,0.2); */
   padding: 6px 10px;
+  display: inline-block;
+  /* margin: 1%; */
 }
 .successMsg{
   color: Green;
@@ -114,48 +164,15 @@ h1 {
   border-radius: 4px;
   /* box-shadow: 0px 0px 20px 0px rgba(255,0,0,0.2); */
   padding: 6px 10px;
+  display: inline-block;
 }
-
-
-/* a:link[name=headerRightLink], a:visited[name=headerRightLink] {
-	background-color: #f44336;
-	color: white;
-	padding: 0.5% 1%;
-	float: right;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	border-radius: 12px;
-}
-
-a:hover[name=headerRightLink], a:active[name=headerRightLink] {
-  background-color: red;
-}
-
-a:link[name=headerLeftLink], a:visited[name=headerLeftLink] {
-	background-color: #4040ff;
-	float: left;
-	color: white;
-	padding: 0.5% 1%;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	border-radius: 12px;
-}
-a:hover[name=headerLeftLink], a:active[name=headerLeftLink] {
-  background-color: blue;
-}
-span[name=headerGreeting] {
-	float: right;
-	font-size:18px;
-} */
 
 span[name=basicPageText] {
 	/* color: green; */
 	font-size:120%;
 	/* padding: 5%; */
 	margin: 5%;
-	margin-top:20px; 
+	margin-top:20px;
 	display:inline-block;
 }
 

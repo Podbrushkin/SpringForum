@@ -8,28 +8,28 @@
 	</head>
 	<body>
 		<header th:replace="fragments/header :: header" />
-		
-		<ul>
-			<li th:each="msg : ${messages}">
-				<span th:utext="|<b>${msg.author.username}</b>: |"></span>
-				<span th:text="${msg.text}"></span>
-			</li>
-		</ul>
-		
-		
-		<!-- <span th:replace="fragments/header :: createMessageForm"/>  th:fragment="createMessageForm"  -->
-		<div>
-			<form class="createMessageForm" action="#" th:action="@{/messages}"
+		<h1>Messages</h1>
+		<div style="width:80%; margin: auto;">  <!-- border:1px solid black; -->
+			<ul class="messagesList">
+				<li th:each="msg : ${messages}">
+					<span th:utext="|<b>${msg.author.username}</b>: |"></span>
+					<span th:text="${msg.text}"></span>
+				</li>
+			</ul>
+			
+			
+			
+			<form class="createMessageForm" th:if="${#authorization.expression('isAuthenticated()')}"
+				action="#" th:action="@{/messages}"
 				th:object="${message}" method="post">
 				
 				
-				<input type="text" th:field="*{text}" placeholder="input your message here" />
+				<textarea th:field="*{text}" placeholder="input your message here" autofocus/>
 				
 				<span class="successMsg" th:if="${successMsg != null}" th:text="${successMsg}" />
 				
-				<p>
-					<button type="submit">Post</button>
-				</p>
+				<button type="submit">Post</button>
+				
 			</form>
 		
 		</div>

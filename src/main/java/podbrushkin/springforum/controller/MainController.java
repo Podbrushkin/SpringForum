@@ -90,12 +90,12 @@ public class MainController {
 	@PostMapping("/createUser")
 	public String createUser(Model model, @ModelAttribute("user") @Valid UserDto user, 
 		BindingResult bindingResult) {
-			
+		model.addAttribute("possibleRoles", userService.getPossibleRoles());	
 		if (bindingResult.hasErrors()) return "createUser";
 		var freshUser = new UserDto(userService.createUser(user));
 		freshUser.setPassword(null);
 		model.addAttribute("successMsg", freshUser.toString());
-		model.addAttribute("possibleRoles", userService.getPossibleRoles());
+		
 		return "createUser";
 	}
 	
