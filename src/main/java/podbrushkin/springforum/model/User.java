@@ -9,9 +9,6 @@ import java.util.Set;
 @Table(name="users")
 @SecondaryTables( value = {
 	@SecondaryTable(name = "userid_username", pkJoinColumns=@PrimaryKeyJoinColumn(name="userid", referencedColumnName="id")),
-	// @SecondaryTable(name = "userid_role", pkJoinColumns=@PrimaryKeyJoinColumn(name="userid", referencedColumnName="id"))
-	// @SecondaryTable(name = "userid_username"),
-	// @SecondaryTable(name = "userid_roles")
 })
 @lombok.ToString
 public class User {
@@ -19,13 +16,11 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	@Column(table="userid_username")
-	// @Size(min=3, max=50)
-	// @Pattern(regexp="^[a-zA-Zа-яА-Я0-9\\s_.-]+$")
+	
 	private String username;
-	// @Size(min=6, max=50)
-	// @Pattern(regexp="^[\\p{Punct}a-zA-Zа-яА-Я0-9\\s]+$")
+	
 	private String password;
-	// @Column(table="userid_role")
+	
 	@ElementCollection
 	@CollectionTable(
 		name="userid_role",

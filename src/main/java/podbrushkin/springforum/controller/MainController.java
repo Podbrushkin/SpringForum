@@ -2,6 +2,7 @@ package podbrushkin.springforum.controller;
 
 import podbrushkin.springforum.service.*;
 import podbrushkin.springforum.model.UserDto;
+import podbrushkin.springforum.model.Message;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,23 +17,29 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import javax.validation.Valid;
 import org.thymeleaf.context.LazyContextVariable;
+import lombok.extern.slf4j.Slf4j;
 import java.util.StringJoiner;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class MainController {
 	
 	@Autowired
 	UserService userService;
+	@Autowired
+	MessageService messageService;
 	
-	@ModelAttribute
+	/* @ModelAttribute
 	public void passPossibleRoles(Model model) {
+		
 		model.addAttribute("possibleRoles", userService.getPossibleRoles());
-	}
+	} */
 	
 	@GetMapping("/")
 	public ModelAndView root() {
-		var mav = new ModelAndView("basicPage");
+		var mav = new ModelAndView("redirect:/messages");
+		
 		// mav.addObject("title", "Welcome");
 		return mav;
 	}
@@ -60,6 +67,7 @@ public class MainController {
 	@GetMapping("/createUser")
 	public String createUser(Model model) {
 		model.addAttribute("user", new UserDto());
+		model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		return "createUser";
 	}
@@ -87,6 +95,7 @@ public class MainController {
 		var freshUser = new UserDto(userService.createUser(user));
 		freshUser.setPassword(null);
 		model.addAttribute("successMsg", freshUser.toString());
+		model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		return "createUser";
 	}
 	
@@ -104,6 +113,26 @@ public class MainController {
 		
 		
 		return "listUsers";
+	}
+	
+	@GetMapping("/messages")
+	public String messages(Model model) {
+		model.addAttribute("message", new Message());
+		model.addAttribute("messages", messageService.getAll());
+		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
+		return "messages";
+	}
+	
+	@PostMapping("/messages")
+	public String createMessage(Authentication auth, Model model, 
+		@ModelAttribute("message") Message msg) {
+		// var msg = model.getAttribute("message");
+		if (msg == null) log.error("Message is null!");
+		// var userDetails = (podbrushkin.springforum.security.MyUserDetails) auth.getPrincipal();
+		// log.info("Attempt to create a message from: "+userDetails.getUsername());
+		messageService.createMessage(auth.getPrincipal(), (Message) msg);
+		// model.addAttribute("message", new Message());
+		return "redirect:/messages";
 	}
 	
 	@GetMapping("/login")
