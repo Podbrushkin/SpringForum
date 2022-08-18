@@ -1,36 +1,26 @@
 package podbrushkin.springforum.controller;
 
-import podbrushkin.springforum.service.*;
-import podbrushkin.springforum.model.UserDto;
-import podbrushkin.springforum.model.Message;
-import podbrushkin.springforum.security.MyUserDetails;
-import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import java.util.StringJoiner;
 
-import org.springframework.web.bind.annotation.ResponseBody;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import javax.validation.Valid;
-import org.thymeleaf.context.LazyContextVariable;
-import lombok.extern.slf4j.Slf4j;
-import java.util.StringJoiner;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.core.ResolvableType;
+import lombok.extern.slf4j.Slf4j;
+import podbrushkin.springforum.model.Message;
+import podbrushkin.springforum.model.UserDto;
+import podbrushkin.springforum.service.*;
+
+
 
 @Controller
 @Slf4j
@@ -41,32 +31,20 @@ public class MainController {
 	@Autowired
 	MessageService messageService;
 	
-	/* @ModelAttribute
-	public void passPossibleRoles(Model model) {
-		
-		model.addAttribute("possibleRoles", userService.getPossibleRoles());
-	} */
-	
 	@GetMapping("/")
 	public ModelAndView root() {
-		var mav = new ModelAndView("redirect:/messages");
-		
-		// mav.addObject("title", "Welcome");
-		return mav;
+		return new ModelAndView("redirect:/messages");
 	}
 	
 	@GetMapping("/info")
 	public ModelAndView userInfo(Authentication authentication) {
 		
-		// if (authentication == null) return var mav = new ModelAndView("basicpage");
-		// "You are not logged in.";
 		String msg = "Hello " + authentication.getName()+", here are your roles: ";
 		var sj = new StringJoiner(", ", "", ".");
 		for (GrantedAuthority authority : authentication.getAuthorities()) {
 			sj.add(authority.getAuthority());
 		}
 		msg += sj.toString();
-		// return msg;
 		
 		var mav = new ModelAndView("basicPage");
 		mav.addObject("title", "Info");
@@ -79,24 +57,8 @@ public class MainController {
 	public String createUser(Model model) {
 		model.addAttribute("user", new UserDto());
 		model.addAttribute("possibleRoles", userService.getPossibleRoles());
-		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		return "createUser";
 	}
-	
-	/* @PostMapping("/createUser")
-	public String createUser(@ModelAttribute @Valid UserDto user, BindingResult bindingResult) {
-		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
-		if (bindingResult.hasErrors()) return "createUser";
-		userService.createUser(user);
-		return "createUser";
-	} */
-	
-	/* @PostMapping("/createUser")
-	public String createUser(@ModelAttribute UserDto user) {
-		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
-		userService.createUser(user);
-		return "createUser";
-	} */
 	
 	@PostMapping("/createUser")
 	public String createUser(Model model, @ModelAttribute("user") @Valid UserDto user, 
@@ -130,61 +92,16 @@ public class MainController {
 	public String messages(Model model) {
 		model.addAttribute("message", new Message());
 		model.addAttribute("messages", messageService.getAll());
-		// model.addAttribute("possibleRoles", userService.getPossibleRoles());
 		return "messages";
 	}
 	
 	@PostMapping("/messages")
 	public String createMessage(Authentication auth, Model model, 
 		@ModelAttribute("message") Message msg) {
-		// var msg = model.getAttribute("message");
 		if (msg == null) log.error("Message is null!");
-		// var userDetails = (podbrushkin.springforum.security.MyUserDetails) auth.getPrincipal();
-		// log.info("Attempt to create a message from: "+userDetails.getUsername());
 		messageService.createMessage(auth.getPrincipal(), (Message) msg);
-		// model.addAttribute("message", new Message());
 		return "redirect:/messages";
 	}
 	
-	@GetMapping("/login")
-	String loginClassic(Model model) {
-		return "login";
-	}
 	
-	private static String authorizationRequestBaseUri = "oauth2/authorization";
-    Map<String, String> oauth2AuthenticationUrls = new HashMap<>();
-
-    @Autowired
-    private ClientRegistrationRepository clientRegistrationRepository;
-	
-	@GetMapping("/oauth_login")
-	String loginOauth(Model model) {
-		// model.addAttribute("googleOauth", "/oauth_login");
-		Iterable<ClientRegistration> clientRegistrations = null;
-		ResolvableType type = ResolvableType.forInstance(clientRegistrationRepository)
-			.as(Iterable.class);
-		if (type != ResolvableType.NONE && 
-			ClientRegistration.class.isAssignableFrom(type.resolveGenerics()[0])) {
-				clientRegistrations = (Iterable<ClientRegistration>) clientRegistrationRepository;
-		}
-
-		clientRegistrations.forEach(registration -> 
-			oauth2AuthenticationUrls.put(registration.getClientName(), 
-			authorizationRequestBaseUri + "/" + registration.getRegistrationId()));
-		model.addAttribute("urls", oauth2AuthenticationUrls);
-
-		return "loginOauth";
-	}
-	
-	@GetMapping("/oauth_success")
-	String oauthSuccess(Authentication auth) {
-		if (auth.getPrincipal() instanceof DefaultOidcUser) {
-			var user = userService.createUserFromOid(auth.getPrincipal());
-			var newAuth = new UsernamePasswordAuthenticationToken(new MyUserDetails(user), null, 
-				user.getRoles().stream()
-					.map(s -> new SimpleGrantedAuthority(s.strip())).toList());
-			SecurityContextHolder.getContext().setAuthentication(newAuth);
-		}
-		return "redirect:/";
-	}
 }
