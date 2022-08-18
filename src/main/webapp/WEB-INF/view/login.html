@@ -8,8 +8,6 @@
 	<body>
 		<header th:replace="fragments/header :: header" />
 		
-		
-		
 		<div th:if="${param.logout}">
 			You have been logged out.</div>
 		<form class="loginForm" th:action="@{/login}" method="post">

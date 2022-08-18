@@ -6,11 +6,15 @@ import podbrushkin.springforum.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;	//oauth
 
 import javax.persistence.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
+import java.math.BigInteger;
 
 @Service
 @Transactional(readOnly=true)
@@ -62,7 +66,8 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		user.setId(null);
-		user.setPassword(encoder.encode(user.getPassword()));
+		if (user.getPassword() != null)
+			user.setPassword(encoder.encode(user.getPassword()));
 		var u = userRepository.save(user);
 		log.info("Persisted new user to database: " + u);
 		return u;
@@ -73,6 +78,49 @@ public class UserServiceImpl implements UserService {
 		var u = UserDto.toUser(userDto);
 		
 		return createUser(u);
+	}
+	
+	@Transactional
+	public User createUserFromOid(Object userOid) {
+		if (!(userOid instanceof DefaultOidcUser)) {
+			log.error("Bad principal:"+userOid);
+			return null;
+		}
+		var userOidPrincipal = (DefaultOidcUser) userOid;
+		var sub = (String) userOidPrincipal.getAttribute("sub");
+		log.info("createUser: sub="+sub);
+		
+		Long userid = null;
+		try {
+			var q = em.createNativeQuery("SELECT userid FROM user_openid where openid=:openid");
+			q.setParameter("openid", sub);
+			var tmp = (BigInteger) q.getSingleResult();
+			userid = tmp.longValue();
+		} catch (Exception e) {
+			if (e.getCause() != null && e.getCause().getCause() != null) {
+				var causeOfCause = e.getCause().getCause().toString();
+				if (causeOfCause.contains("Table 'springforum.user_openid' doesn't exist")) {
+					var upd = em.createNativeQuery("create table user_openid (userid bigint, openid varchar(256) unique)");
+					upd.executeUpdate();
+				}
+			} else log.error(""+e);
+		}
+		if (userid == null) {
+			var newUser = createUser(new User(sub, null, Set.of("ROLE_USER")));
+			userid = newUser.getId();
+			
+			var upd = em.createNativeQuery("insert into user_openid values (:userid, :openid)");
+			upd.setParameter("userid", userid);
+			upd.setParameter("openid", sub);
+			upd.executeUpdate();
+			return newUser;
+		} else {
+			log.info("User have been recognised and wouldn't be created");
+			var user = userRepository.getReferenceById(userid);
+			user.getRoles().size();
+			return user;
+			
+		}
 	}
 	
 	public List<String> getPossibleRoles() {

@@ -39,6 +39,7 @@ public class MessageServiceImpl implements MessageService {
 	
 	@Transactional
 	public Message createMessage(Object principal, Message message) {
+		log.info("Attempt to create message from"+principal);
 		if (message.getText().isBlank()) return null;
 		message.setId(null);
 		var userDetails = (podbrushkin.springforum.security.MyUserDetails) principal;
