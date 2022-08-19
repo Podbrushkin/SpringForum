@@ -7,19 +7,26 @@
 	</head>
 	<body>
 		<header th:replace="fragments/header :: header" />
-		<a th:href="${loginGoogle}">Login with Google</a>
-		
-		<div th:if="${param.logout}">
-			You have been logged out.</div>
-		<form class="loginForm" th:action="@{/login}" method="post">
-			<div class="errorMsg" th:if="${param.error}">Bad credentials.</div>
-			<div>
-			<input type="text" name="username" placeholder="Username"/>
-			</div>
-			<div>
-			<input type="password" name="password" placeholder="Password"/>
-			</div>
-			<button type="submit">Log in</button>
-		</form>
+		<div class="loginForm">
+			
+			
+			<div th:if="${param.logout}">
+				You have been logged out.</div>
+				
+			<form  th:action="@{/login}" method="post">
+				<div class="errorMsg" th:if="${param.error}">Bad credentials.</div>
+				<div>
+				<input type="text" name="username" placeholder="Username"/>
+				</div>
+				<div>
+				<input type="password" name="password" placeholder="Password"/>
+				</div>
+				<button type="submit">Log in</button>
+				
+			</form>
+			<p style="text-align: center">or</p>
+			<a th:href="${loginGoogle}">Login with Google</a>
+			
+		</div>
 	</body>
 </html>
