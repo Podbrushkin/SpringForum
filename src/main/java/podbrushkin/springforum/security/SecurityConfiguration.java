@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
+
 @Configuration
 @EnableWebSecurity
 @PropertySource("classpath:application.properties")
@@ -47,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 			http.authorizeRequests()
-				// .antMatchers("/login").permitAll()
+				.antMatchers("/login").permitAll()
 				.antMatchers("/info").permitAll()
 				.antMatchers("/createUser").hasAuthority("ROLE_ADMIN")
 				.antMatchers("/listUsers").hasAuthority("ROLE_ADMIN")
