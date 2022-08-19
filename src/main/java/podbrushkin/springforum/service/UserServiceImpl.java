@@ -44,13 +44,6 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
-	/* public List<User> fetch(List<User> users) {
-		for (var u : users) {
-			u.getRoles().size();
-		}
-		return users;
-	} */
-	
 	public Optional<User> findByUsername(String username) {
 		return Optional.ofNullable(userRepository.findByUsername(username));
 	}
@@ -80,47 +73,60 @@ public class UserServiceImpl implements UserService {
 		return createUser(u);
 	}
 	
-	@Transactional
-	public User createUserFromOid(Object userOid) {
-		if (!(userOid instanceof DefaultOidcUser)) {
-			log.error("Bad principal:"+userOid);
+	public User getOrCreateUserByOidcPrincipal(Object principal) {
+		if (!(principal instanceof DefaultOidcUser)) {
+			log.error("Bad principal:"+principal);
 			return null;
 		}
-		var userOidPrincipal = (DefaultOidcUser) userOid;
-		var sub = (String) userOidPrincipal.getAttribute("sub");
-		log.info("createUser: sub="+sub);
+		var userOidPrincipal = (DefaultOidcUser) principal;
+		var user = getUserByOidcPrincipal(userOidPrincipal);
+		if (user != null) return user;
+		else return createUserByOidcPrincipal(userOidPrincipal);
+	}
+	
+	@Transactional
+	private User createUserByOidcPrincipal(DefaultOidcUser oidUser) {
+		
+		var sub = (String) oidUser.getAttribute("sub");
+		
+		var newUser = createUser(new User(sub, null, Set.of("ROLE_USER")));
+		var userid = newUser.getId();
+		
+		var upd = em.createNativeQuery("insert into user_openid values (:userid, :openid)");
+		upd.setParameter("userid", userid);
+		upd.setParameter("openid", sub);
+		upd.executeUpdate();
+		
+		var msg = "Created new user by OpenId: userId=%s, username=%s, openId=%s";
+		log.info(String.format(msg, newUser.getId(), newUser.getUsername(), sub));
+		return newUser;
+	
+	}
+	
+	private User getUserByOidcPrincipal(DefaultOidcUser principal) {
+		var sub = (String) principal.getAttribute("sub");
 		
 		Long userid = null;
 		try {
 			var q = em.createNativeQuery("SELECT userid FROM user_openid where openid=:openid");
 			q.setParameter("openid", sub);
-			var tmp = (BigInteger) q.getSingleResult();
-			userid = tmp.longValue();
+			var id = (BigInteger) q.getSingleResult();
+			userid = id.longValue();
+			var user = userRepository.getReferenceById(userid);
+			user.getRoles().size();
+			var msg = "Found user by OpenId: userId=%s, username=%s, openId=%s";
+			log.info(String.format(msg, user.getId(), user.getUsername(), sub));
+			return user;
 		} catch (Exception e) {
 			if (e.getCause() != null && e.getCause().getCause() != null) {
 				var causeOfCause = e.getCause().getCause().toString();
 				if (causeOfCause.contains("Table 'springforum.user_openid' doesn't exist")) {
 					var upd = em.createNativeQuery("create table user_openid (userid bigint, openid varchar(256) unique)");
 					upd.executeUpdate();
-				}
-			} else log.error(""+e);
+				} else log.error(""+e);
+			}
 		}
-		if (userid == null) {
-			var newUser = createUser(new User(sub, null, Set.of("ROLE_USER")));
-			userid = newUser.getId();
-			
-			var upd = em.createNativeQuery("insert into user_openid values (:userid, :openid)");
-			upd.setParameter("userid", userid);
-			upd.setParameter("openid", sub);
-			upd.executeUpdate();
-			return newUser;
-		} else {
-			log.info("User have been recognised and wouldn't be created");
-			var user = userRepository.getReferenceById(userid);
-			user.getRoles().size();
-			return user;
-			
-		}
+		return null;
 	}
 	
 	public List<String> getPossibleRoles() {

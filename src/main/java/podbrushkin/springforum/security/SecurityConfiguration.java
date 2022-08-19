@@ -41,15 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		
 		auth.userDetailsService(userDetailsService);
-		
-		/* auth.inMemoryAuthentication()
-			.withUser("user").password(encoder.encode("password")).roles("USER")
-			.and().withUser("admin").password(encoder.encode("password")).roles("USER", "ADMIN"); */
-			
-		
 	}
 	
 	@Override
@@ -60,15 +52,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/createUser").hasAuthority("ROLE_ADMIN")
 				.antMatchers("/listUsers").hasAuthority("ROLE_ADMIN")
 				.antMatchers("/").permitAll()
-				.and().formLogin(form -> form
-					.loginPage("/login")
-					.permitAll())
-				.logout()
+				.and().formLogin().loginPage("/login")
+				.and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/")
 				.and().oauth2Login()
+				.loginPage("/login")
 				.defaultSuccessUrl("/oauth_success")
-				// .loginPage("/oauth_login")
 				.clientRegistrationRepository(clientRegistrationRepository())
 				.authorizedClientService(authorizedClientService());
 				
@@ -91,7 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private ClientRegistration getRegistration(String client) {
 		String clientId = env.getProperty(CLIENT_PROPERTY_KEY + client + ".client-id");
-		log.info("clientId="+clientId);
 		if (clientId == null) {
 			return null;
 		}
@@ -100,7 +89,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 
 		if (client.equals("google")) {
 			var googleOauth = CommonOAuth2Provider.GOOGLE.getBuilder(client)
-			  .clientId(clientId).clientSecret(clientSecret).build();
+				.clientId(clientId).clientSecret(clientSecret)
+				.scope("openid").build();
+				
 			log.info("googleOauth="+googleOauth);
 			return googleOauth;
 		}

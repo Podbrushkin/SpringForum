@@ -13,7 +13,7 @@ public interface UserService {
 	Optional<User> getById(long id);
 	User createUser(User user);
 	User createUser(UserDto user);
-	User createUserFromOid(Object userOid);
+	User getOrCreateUserByOidcPrincipal(Object userOid);
 	List<String> getPossibleRoles();
 	// List<User> fetch(List<User> users);
 }

@@ -18,7 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.extern.slf4j.Slf4j;
 import podbrushkin.springforum.model.Message;
 import podbrushkin.springforum.model.UserDto;
-import podbrushkin.springforum.service.*;
+import podbrushkin.springforum.service.UserService;
+import podbrushkin.springforum.service.MessageService;
 
 
 

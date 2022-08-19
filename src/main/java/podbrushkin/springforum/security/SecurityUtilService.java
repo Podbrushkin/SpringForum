@@ -1,26 +1,37 @@
 package podbrushkin.springforum.security;
 
 import podbrushkin.springforum.model.User;
+import podbrushkin.springforum.service.UserService;
+import podbrushkin.springforum.security.MyUserDetails;
+import org.springframework.context.event.EventListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.web.context.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 // import javax.annotation.PostConstruct;
-import org.springframework.context.event.EventListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+
 import lombok.extern.slf4j.Slf4j;
 import java.util.Set;
 
 @Service
 @Transactional
 @Slf4j
-public class InitService {
+public class SecurityUtilService {
 	
 	@PersistenceContext
 	EntityManager em;
+	@Autowired
+	UserService userService;
 	
 	@Autowired
 	PasswordEncoder encoder;
@@ -41,9 +52,22 @@ public class InitService {
 		log.info("List of existing users:"+ users);
 	}
 	
+	public boolean reauthenticateOidcUser(Object principal) {
+		if (!(principal instanceof DefaultOidcUser)) {
+			log.warn("Attempt to reauthenticate bad principal: "+principal);
+			return false;
+		}
+		var user = userService.getOrCreateUserByOidcPrincipal(principal);
+		var newAuth = new UsernamePasswordAuthenticationToken(new MyUserDetails(user), null, 
+			user.getRoles().stream()
+				.map(s -> new SimpleGrantedAuthority(s.strip())).toList());
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+		return true;
+	}
+	
 	@EventListener(ContextRefreshedEvent.class)
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-        event.getApplicationContext().getBean(InitService.class).createUserIfThereAreNone();
+        event.getApplicationContext().getBean(SecurityUtilService.class).createUserIfThereAreNone();
     }
 	
 	
