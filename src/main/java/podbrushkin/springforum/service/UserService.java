@@ -14,6 +14,7 @@ public interface UserService {
 	User createUser(User user);
 	User createUser(UserDto user);
 	User getOrCreateUserByOidcPrincipal(Object userOid);
+	void changeUsernameOfPrincipal(Object principal, String username);
 	List<String> getPossibleRoles();
 	// List<User> fetch(List<User> users);
 }

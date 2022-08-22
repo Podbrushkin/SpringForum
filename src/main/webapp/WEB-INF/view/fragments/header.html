@@ -10,7 +10,7 @@
 			<li><a id="logo" href="/">Spring Forum</a></li>
 			<span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
 				<li><a href="/createUser">Create user</a></li>
-				<li><a href="/listUsers">List users</a></li>
+				<li><a href="/users">Users</a></li>
 			</span>
 			<li><a href="/messages">Messages</a></li>
 			<!-- <li style="float:right"><a class="active" href="/login">Login</a></li> -->
@@ -19,20 +19,16 @@
 					<a href="/logout">Logout</a>
 				</li>
 				<li style="float:right">
-					<a id="greeting" th:utext="|Hello, <b>${#authentication.name}</b>!|" />
+				<!-- it would be nice to make a name clickable -->
+					<a id="greeting" th:utext="|Hello, <b>${#authentication.name}</b>!|" 
+						href="/profile"/>
 				</li>
 			</span>
 			<span th:if="${#authorization.expression('!isAuthenticated()')}">
 				<li style="float:right"><a href="/login" class="active">Login</a></li>
 			</span>
-			
 		</ul>
-		
     </div>
-	
-	
-	
-	
 	
   </body>
 </html>

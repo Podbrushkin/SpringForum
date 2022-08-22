@@ -1,6 +1,7 @@
 package podbrushkin.springforum.security;
 
 import podbrushkin.springforum.model.User;
+
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;

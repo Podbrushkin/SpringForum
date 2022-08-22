@@ -2,10 +2,11 @@ package podbrushkin.springforum.service;
 
 import podbrushkin.springforum.model.*;
 import podbrushkin.springforum.repository.*;
-
+import podbrushkin.springforum.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;	//oauth
 
 import javax.persistence.*;
@@ -129,6 +130,22 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 	
+	@Transactional(readOnly=false)
+	public void changeUsername(User user, String newUsername) {
+		if (userRepository.findByUsername(newUsername) != null) return;
+		var msg = "Changing username: %s, to: %s"; 
+		log.info(String.format(msg, user, newUsername));
+		user.setUsername(newUsername);
+		em.merge(user);
+	}
+	
+	@Transactional(readOnly=false)
+	public void changeUsernameOfPrincipal(Object principal, String newUsername) {
+		var userDet = (MyUserDetails) principal;
+		changeUsername(userRepository.findByUsername(userDet.getUsername()), newUsername);
+		
+	}
+	
 	public List<String> getPossibleRoles() {
 		String q = "select distinct(r) from User u join u.roles r";
 		var possibleRoles = em.createQuery(q, String.class).getResultList();
@@ -137,4 +154,5 @@ public class UserServiceImpl implements UserService {
 		}
 		return possibleRoles;
 	}
+	
 }

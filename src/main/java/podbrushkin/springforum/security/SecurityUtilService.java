@@ -65,6 +65,21 @@ public class SecurityUtilService {
 		return true;
 	}
 	
+	public boolean reauthenticateUser(Object principal, String newUsername) {
+		if (!(principal instanceof MyUserDetails)) {
+			log.warn("Attempt to reauthenticate bad principal: "+principal);
+			return false;
+		}
+		var userDet = (MyUserDetails) principal;
+		var newUserDet = new MyUserDetails(userService.findByUsername(newUsername).get());
+		var newAuth = new UsernamePasswordAuthenticationToken(newUserDet, userDet.getPassword(), 
+			userDet.getAuthorities());
+		log.info("newAuth:"+newAuth);
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+		return true;
+		
+	}
+	
 	@EventListener(ContextRefreshedEvent.class)
 	public void onApplicationEvent(ContextRefreshedEvent event) {
         event.getApplicationContext().getBean(SecurityUtilService.class).createUserIfThereAreNone();

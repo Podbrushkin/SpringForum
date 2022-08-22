@@ -7,9 +7,8 @@ import java.util.Set;
 
 @Entity
 @Table(name="users")
-@SecondaryTables( value = {
-	@SecondaryTable(name = "userid_username", pkJoinColumns=@PrimaryKeyJoinColumn(name="userid", referencedColumnName="id")),
-})
+@SecondaryTable(name = "userid_username", 
+		pkJoinColumns=@PrimaryKeyJoinColumn(name="userid", referencedColumnName="id"))
 @lombok.ToString
 public class User {
 	@Id

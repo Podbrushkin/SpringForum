@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import podbrushkin.springforum.model.Message;
 import podbrushkin.springforum.model.UserDto;
 import podbrushkin.springforum.service.UserService;
 import podbrushkin.springforum.service.MessageService;
+import podbrushkin.springforum.security.SecurityUtilService;
 
 
 
@@ -31,6 +33,8 @@ public class MainController {
 	UserService userService;
 	@Autowired
 	MessageService messageService;
+	@Autowired
+	SecurityUtilService securityUtilService;
 	
 	@GetMapping("/")
 	public ModelAndView root() {
@@ -73,7 +77,7 @@ public class MainController {
 		return "createUser";
 	}
 	
-	@GetMapping("/listUsers")
+	@GetMapping("/users")
 	public String listUsers(Model model) {
 		
 		var users = userService.getAllEager().stream()
@@ -84,8 +88,6 @@ public class MainController {
 			}).toList();
 		
 		model.addAttribute("users", users);
-		
-		
 		return "listUsers";
 	}
 	
@@ -104,5 +106,19 @@ public class MainController {
 		return "redirect:/messages";
 	}
 	
+	@GetMapping("/profile")
+	public String profile(Model model) {
+		return "profile";
+	}
+	
+	
+	@PostMapping("/profile/changeUsername")
+	public String changeUsername(Authentication auth,
+		@RequestParam(name="newUsername", required=true) String newUsername) {
+			
+			userService.changeUsernameOfPrincipal(auth.getPrincipal(), newUsername);
+			securityUtilService.reauthenticateUser(auth.getPrincipal(), newUsername);
+			return "redirect:/";
+	}
 	
 }

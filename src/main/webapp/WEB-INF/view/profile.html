@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link href="../../../resources/css/styles.css" rel="stylesheet" 
+			media="screen" th:href="@{/resources/css/styles.css}"/>
+		<title th:text="${title}">Profile</title>
+	</head>
+	<body>
+		<header th:replace="fragments/header :: header" />
+		<h1>Profile</h1>
+		<form th:action="@{/profile/changeUsername}" method="post">
+			<input type="text" name="newUsername" placeholder="Username" />
+			<input type="submit">
+		</form>
+		<!-- <span th:replace="fragments/header :: createMessageForm"/> -->
+	</body>
+</html>

@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Arrays;
 import java.util.Collection;
 
-
+@lombok.ToString
 public class MyUserDetails implements UserDetails {
 	
     private final String username;
