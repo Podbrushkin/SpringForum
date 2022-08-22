@@ -9,6 +9,9 @@
 		pg_ctl -D c:\pgsql\data start
 		mvn jetty:run
 		http://127.0.0.1:8080/
+		
+		\! cls; select u.id, un.username, ur.roles from users u, userid_username un, userid_role ur 
+			WHERE u.id=un.userid AND u.id=ur.userid;
 	</description>
 	
 	<properties>
@@ -96,6 +99,13 @@
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
 			<version>3.0.4.RELEASE</version>
 		</dependency>
+		<!-- https://www.baeldung.com/dates-in-thymeleaf -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-java8time</artifactId>
+			<version>3.0.4.RELEASE</version>
+		</dependency>
+
 
 
 

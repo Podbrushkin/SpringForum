@@ -162,6 +162,12 @@ h1 {
 	/* margin: 10px 0; */
 }
 
+.messagesList #date {
+	float: right;
+	opacity: 0.8;
+	font-size: 80%;
+}
+
 .errorMsg {
   color:red;
   background-color: LavenderBlush;

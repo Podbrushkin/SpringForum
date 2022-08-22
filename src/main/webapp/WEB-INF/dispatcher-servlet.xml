@@ -50,6 +50,8 @@
                 <prop key="hibernate.hbm2ddl.auto">
                     update
                 </prop>
+				<!-- <prop key="hibernate.show_sql">true</prop> -->
+				
                 <prop key="hibernate.dialect">
                     org.hibernate.dialect.MySQL5InnoDBDialect
                 </prop>	<!-- org.hibernate.dialect.PostgreSQLDialect -->
@@ -101,6 +103,7 @@
 			<set>
 			  <!-- Note the package would change to 'springsecurity[5]' if you are using that version -->
 			  <bean class="org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect"/>
+			  <bean class="org.thymeleaf.extras.java8time.dialect.Java8TimeDialect"/>
 			</set>
 		  </property>
 	</bean>

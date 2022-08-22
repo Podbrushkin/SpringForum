@@ -13,13 +13,14 @@
 			<ul class="messagesList">
 				<li th:each="msg : ${messages}">
 					<span th:utext="|<b>${msg.author.username}</b>: |"></span>
+					<span id="date" th:text="${#temporals.format(msg.date, 'dd-MM-yyyy HH:mm')}"></span>
 					<span th:text="${msg.text}"></span>
 				</li>
 			</ul>
 			
 			
 			
-			<form class="createMessageForm" th:if="${#authorization.expression('isAuthenticated()')}"
+			<form class="createMessageForm" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
 				action="#" th:action="@{/messages}"
 				th:object="${message}" method="post">
 				
