@@ -18,14 +18,12 @@
 				</li>
 			</ul>
 			
-			
-			
 			<form class="createMessageForm" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
 				action="#" th:action="@{/messages}"
 				th:object="${message}" method="post">
 				
 				
-				<textarea th:field="*{text}" placeholder="input your message here" autofocus/>
+				<textarea th:field="*{text}" placeholder="Your message" maxlength=254 required />
 				
 				<span class="successMsg" th:if="${successMsg != null}" th:text="${successMsg}" />
 				

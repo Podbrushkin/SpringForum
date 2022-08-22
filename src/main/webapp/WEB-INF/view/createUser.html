@@ -17,12 +17,14 @@
 			>
 			
 			
-			<input type="text" th:field="*{username}" placeholder="Username" />
+			<input type="text" th:field="*{username}" placeholder="Username" 
+				minlength=3 maxlength=50 required />
 			<!-- <label>Username: </label> -->
 			<span class="errorMsg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
 			<br/>
 			
-			<input type="password" th:field="*{password}" placeholder="Password"/>
+			<input type="password" th:field="*{password}" placeholder="Password" 
+				minlength=6 maxlength=50 required />
 			<!-- <span>Password: </span> -->
 			<span class="errorMsg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span>
 			<br/>

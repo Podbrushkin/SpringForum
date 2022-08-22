@@ -10,7 +10,8 @@
 		<header th:replace="fragments/header :: header" />
 		<h1>Profile</h1>
 		<form th:action="@{/profile/changeUsername}" method="post">
-			<input type="text" name="newUsername" placeholder="Username" />
+			<input type="text" name="newUsername" placeholder="Username" 
+				minlength=3 maxlength=50 required />
 			<input type="submit">
 		</form>
 		<!-- <span th:replace="fragments/header :: createMessageForm"/> -->
