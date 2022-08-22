@@ -62,7 +62,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.defaultSuccessUrl("/oauth_success")
 				.clientRegistrationRepository(clientRegistrationRepository())
-				.authorizedClientService(authorizedClientService());
+				.authorizedClientService(authorizedClientService())
+				.authorizationEndpoint()
+                    .authorizationRequestResolver(
+                            new CustomAuthorizationRequestResolver(
+                                    this.clientRegistrationRepository()));
 				
 	}
 	
@@ -95,6 +99,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.scope("openid").build();
 				
 			log.info("googleOauth="+googleOauth);
+			// log.info("it's redirectUri="+googleOauth.getRedirectUri());
 			return googleOauth;
 		}
 		return null;
