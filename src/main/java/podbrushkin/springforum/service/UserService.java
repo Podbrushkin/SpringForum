@@ -16,5 +16,9 @@ public interface UserService {
 	User getOrCreateUserByOidcPrincipal(Object userOid);
 	void changeUsernameOfPrincipal(Object principal, String username);
 	List<String> getPossibleRoles();
+	
+	// :( Hibernate fails to create user_openid table on first run, this is workaround;
+	// Without it first oid user registration after db init will fail
+	void createTableIfNotExists();
 	// List<User> fetch(List<User> users);
 }

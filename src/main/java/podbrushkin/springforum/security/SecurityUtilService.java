@@ -1,27 +1,24 @@
 package podbrushkin.springforum.security;
 
-import podbrushkin.springforum.model.User;
-import podbrushkin.springforum.service.UserService;
-import podbrushkin.springforum.security.MyUserDetails;
-import org.springframework.context.event.EventListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.web.context.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-// import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
-import java.util.Set;
+import podbrushkin.springforum.model.User;
+import podbrushkin.springforum.service.UserService;
 
 @Service
 @Transactional
@@ -38,6 +35,7 @@ public class SecurityUtilService {
 	
 	@Transactional(readOnly=false)
 	public void createUserIfThereAreNone() {
+		userService.createTableIfNotExists();	//TODO: get rid of this
 		log.info("Checking if there are any users in database...");
 		// var jpql = "select count(*) from User";
 		var jpql = "from User";

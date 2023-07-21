@@ -1,21 +1,24 @@
 package podbrushkin.springforum.service;
 
-import podbrushkin.springforum.model.*;
-import podbrushkin.springforum.repository.*;
-import podbrushkin.springforum.security.MyUserDetails;
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;	//oauth
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;	//oauth
 
-import javax.persistence.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import java.util.Optional;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Set;
-import java.math.BigInteger;
+import podbrushkin.springforum.model.User;
+import podbrushkin.springforum.model.UserDto;
+import podbrushkin.springforum.repository.UserRepository;
+import podbrushkin.springforum.security.MyUserDetails;
 
 @Service
 @Transactional(readOnly=true)
@@ -87,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	private User createUserByOidcPrincipal(DefaultOidcUser oidUser) {
-		
+
 		var sub = (String) oidUser.getAttribute("sub");
 		
 		var newUser = createUser(new User(sub, null, Set.of("ROLE_USER")));
@@ -119,16 +122,29 @@ public class UserServiceImpl implements UserService {
 			log.info(String.format(msg, user.getId(), user.getUsername(), sub));
 			return user;
 		} catch (Exception e) {
+			//TODO: get rid of this
 			if (e.getCause() != null && e.getCause().getCause() != null) {
 				var causeOfCause = e.getCause().getCause().toString();
 				if (causeOfCause.contains("Table 'springforum.user_openid' doesn't exist")) {
 					var upd = em.createNativeQuery("create table user_openid (userid bigint, openid varchar(256) unique)");
 					upd.executeUpdate();
-				} else log.error(""+e);
+				} else log.error("Failed to read user from DB by openId"+e);
 			}
 		}
 		return null;
 	}
+	@Transactional
+	public void createTableIfNotExists() {
+        Query query = em.createNativeQuery(
+            "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'user_openid')"
+        );
+		BigInteger result = (BigInteger) query.getSingleResult();
+		log.info("isTableExists(): "+result);
+		if (!result.equals(BigInteger.ONE)) {
+			var upd = em.createNativeQuery("create table user_openid (userid bigint, openid varchar(256) unique)");
+			upd.executeUpdate();
+		}
+    }
 	
 	@Transactional(readOnly=false)
 	public void changeUsername(User user, String newUsername) {
